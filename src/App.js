@@ -31,15 +31,21 @@ function App(){
 
   return (
     <div className="App">
-      <h1>Sanrio Collection</h1>
+      <h1 className="app-header">Sanrio Collection</h1>
       <input
       type="text"
       placeholder="Search characters..."
       value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)
-      }
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="search-input"
       />
-      <CharacterGrid characters={characters}/>
+      <CharacterGrid characters={filteredCharacters}/>
+
+      <footer className="disclaimer">
+        <p>This is a fan-made educational project. All character names, images, and 
+    related content are © Sanrio Co., Ltd. This site is not affiliated with 
+    or endorsed by Sanrio. </p>
+      </footer>
     </div>
   );
 };
