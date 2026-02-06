@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Copyright from "./Copyright";
 
 function CharacterDetails() {
@@ -7,8 +7,6 @@ function CharacterDetails() {
 
   const [character, setCharacter] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(

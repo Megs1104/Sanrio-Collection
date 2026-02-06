@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CharacterGrid from "./CharacterGrid";
 import Copyright from "./Copyright";
+import AIChatBubble from "./AIChatBubble";
 
 function HomePage() {
   const [characters, setCharacters] = useState([]);
@@ -13,6 +14,7 @@ function HomePage() {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setCharacters(data);
         setLoading(false);
       })
@@ -45,7 +47,7 @@ function HomePage() {
         className="search-input"
       />
       <CharacterGrid characters={filteredCharacters} />
-
+      <AIChatBubble />
       <footer className="disclaimer">
         <Copyright />
       </footer>
