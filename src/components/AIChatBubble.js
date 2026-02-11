@@ -24,7 +24,7 @@ function AIChatBubble() {
     setMessages((prev) => [...prev, userMessage]);
     const currentInput = input;
     setLoading(true);
-
+    setInput("");
     try {
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
@@ -57,7 +57,6 @@ function AIChatBubble() {
     } finally {
       setLoading(false);
     }
-    setInput("");
   }
 
   function handleKeyPress(e) {
