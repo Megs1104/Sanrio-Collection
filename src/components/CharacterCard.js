@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function CharacterCard({ character }) {
+const CharacterCard = ({ character }) => {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate(`/characters/${character.id}`);
@@ -12,6 +12,6 @@ function CharacterCard({ character }) {
       <h1>{character.name}</h1>
     </div>
   );
-}
+};
 
 export default CharacterCard;

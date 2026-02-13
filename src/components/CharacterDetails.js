@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Copyright from "./Copyright";
 
-function CharacterDetails() {
+const CharacterDetails = () => {
   const { id } = useParams();
 
   const [character, setCharacter] = useState(null);
@@ -49,6 +49,6 @@ function CharacterDetails() {
       </footer>
     </div>
   );
-}
+};
 
 export default CharacterDetails;

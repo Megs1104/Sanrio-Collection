@@ -1,20 +1,38 @@
-import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import { getIdToken, getUserId } from "../utils/authAssistance";
 
 const API_ENDPOINT =
   "https://1ah3etfl1l.execute-api.eu-west-2.amazonaws.com/chat";
 
-function AIChatBubble() {
+const AIChatBubble = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userId] = useState(() => `user-${Date.now()}`);
+  const [userId, setUserId] = useState(null);
   const [sessionId] = useState(() => `session-${Date.now()}`);
 
-  async function sendMessage() {
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const id = await getUserId();
+        setUserId(id || `guest-${Date.now()}`);
+      } catch (error) {
+        console.error("Error getting user ID: ", error);
+        setUserId(`guest-${Date.now()}`);
+      }
+    };
+    fetchUserId();
+  }, []);
+
+  const sendMessage = async () => {
     if (!input.trim()) return;
+
+    if (!userId) {
+      console.error("No user ID available.");
+      return;
+    }
 
     const userMessage = {
       role: "user",
@@ -26,9 +44,10 @@ function AIChatBubble() {
     setLoading(true);
     setInput("");
     try {
+      const token = await getIdToken();
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: token },
         body: JSON.stringify({
           message: currentInput,
           userId: userId,
@@ -57,13 +76,13 @@ function AIChatBubble() {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  function handleKeyPress(e) {
+  const handleKeyPress = (e) => {
     if (e.key === "Enter" && !loading) {
       sendMessage();
     }
-  }
+  };
 
   return (
     <div>
@@ -90,7 +109,7 @@ function AIChatBubble() {
               <p>Hello! Ask me anything about Sanrio characters!</p>
             ) : (
               messages.map((message, index) => (
-                <div key={index} className={`message ${message.role}`}>
+                <div key={index} className={`chat-message ${message.role}`}>
                   {message.role === "assistant" ? (
                     <ReactMarkdown>{message.content}</ReactMarkdown>
                   ) : (
@@ -120,6 +139,6 @@ function AIChatBubble() {
       )}
     </div>
   );
-}
+};
 
 export default AIChatBubble;

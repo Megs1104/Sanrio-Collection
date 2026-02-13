@@ -1,4 +1,4 @@
-function Copyright() {
+const Copyright = () => {
   return (
     <div>
       <p>
@@ -8,6 +8,6 @@ function Copyright() {
       </p>
     </div>
   );
-}
+};
 
 export default Copyright;

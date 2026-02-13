@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CharacterGrid from "./CharacterGrid";
 import Copyright from "./Copyright";
 import AIChatBubble from "./AIChatBubble";
+import UserAuth from "./Auth/UserAuth";
+import { isAuthenticated } from "../utils/authAssistance";
 
-function HomePage() {
+const HomePage = () => {
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     fetch(
@@ -17,6 +20,7 @@ function HomePage() {
         console.log(data);
         setCharacters(data);
         setLoading(false);
+        setIsLoggedIn(isAuthenticated());
       })
       .catch((error) => {
         console.error("Error fetching characters:", error);
@@ -38,6 +42,7 @@ function HomePage() {
 
   return (
     <div className="App">
+      <UserAuth />
       <h1 className="app-header">Sanrio Collection</h1>
       <input
         type="text"
@@ -47,12 +52,12 @@ function HomePage() {
         className="search-input"
       />
       <CharacterGrid characters={filteredCharacters} />
-      <AIChatBubble />
+      {isLoggedIn && <AIChatBubble />}
       <footer className="disclaimer">
         <Copyright />
       </footer>
     </div>
   );
-}
+};
 
 export default HomePage;
